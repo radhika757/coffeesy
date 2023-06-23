@@ -20,8 +20,6 @@ const Landing = () => {
               2000,
               'COFFEE: A HUG IN A MUG',
               3000,
-              'YAY',
-              2000
             ]}
             wrapper="h1"
             cursor={true}

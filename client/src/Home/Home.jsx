@@ -1,11 +1,12 @@
 import React from "react";
 import Landing from "./Landing";
+import Ingredients from "./Ingredients";
 
 const Home = () => {
   return (
     <React.Fragment>
       <Landing/>
-      {/* <p>Your beverage elevated </p> */}
+      <Ingredients/>
     </React.Fragment>
   );
 };
