@@ -1,0 +1,31 @@
+nav {
+  margin: 20px 100px;
+  text-align: center;
+  display: flex;
+  justify-content: space-between;
+  font-size: 25px;
+}
+
+nav ul {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  display: flex;
+}
+.logo {
+  list-style-type: none;
+  margin: -15px;
+}
+.logo img{
+  width: 6.5em;
+  height: 2.5em
+}
+li {
+  padding: 15px 20px;
+}
+
+li a {
+  text-decoration: none;
+  color: #000000;
+  font-weight: bold;
+}
