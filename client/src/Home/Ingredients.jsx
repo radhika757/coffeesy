@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 
 const Ingredients = () => {
   const [getIng, setIng] = useState([]);
+  let number = 30; 
+   number = 20; // re-assigned
   //   console.log(getIng);
   useEffect(() => {
     Axios.get("http://localhost:3001/get_ingredients")

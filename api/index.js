@@ -27,14 +27,24 @@ app.listen(port, () => {
   console.log("Server started at port:" + port);
 });
 
+app.get('/',(req,res)=>{
+  connection.query("SELECT * FROM ingredients", (err, result) => {
+    if (err) {
+      res.send('Error:',err)
+    } else {
+     res.send(result); 
+    }
+  });
+})
+
 app.get("/get_ingredients", (req, res) => {
-  console.log("API called");
+//   console.log("API called");
   connection.query("SELECT * FROM ingredients LIMIT 6", (err, result) => {
     if (err) {
       console.log(err);
       res.status(422).json("No ingredients found");
     } else {
-      console.log(result);
+      // console.log(result);
       res.status(201).json(result);
     }
   });

@@ -15,7 +15,7 @@ const Navbar = () => {
           </li>
 
           <li>
-            <Link to="/">Merch</Link>
+            <Link to="/merch">Merch</Link>
           </li>
         </ul>
         <li className="logo">

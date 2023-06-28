@@ -1,7 +1,7 @@
 .box-container{
     display: flex;
     justify-content: space-between;
-    margin: 15px 50px;
+    margin: 45px 50px; 
 }
 
 .box{
@@ -12,7 +12,7 @@
     height: 10em;
     background-color: #ffffff;
 }
-
+ 
 .box img{
     width: 6em;
 }
