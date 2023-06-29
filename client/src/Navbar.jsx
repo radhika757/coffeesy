@@ -29,7 +29,7 @@ const Navbar = () => {
             <Link to="/"> <img src={user} alt="user"/>  </Link>
           </li>
           <li>
-            <Link to="/"><img src={cart} alt="cart" /></Link>
+            <Link to="/cart"><img src={cart} alt="cart" /></Link>
           </li>
         </ul>
       </nav>

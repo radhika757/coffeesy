@@ -9,16 +9,20 @@
   font-size: 35px;
 }
 
-.container-main button {
+.to-all-cans {
   width: 10em;
   padding: 15px 15px;
   border: 2px solid black;
   background-color: khaki;
   font-weight: 800;
   margin: 35px;
-  /* top: 95em; */
   left: 43em;
   position: relative;
+}
+
+.to-all-cans a{
+  text-decoration: none;
+  color: black;
 }
 .container-cans {
   display: flex;
@@ -26,8 +30,111 @@
 }
 
 .cans {
-  border: 1px solid black;
+  border: 2px solid black;
   height: 18em;
   width: 15em;
   margin: 10px 25px;
 }
+
+.cans img{
+  width: 100%;
+  height: 65%;
+}
+
+.cans-box{
+  margin: 0px 10px;
+  position: relative;
+  top: -13px;
+}
+.cans-details{
+  margin: 4px;
+  display: flex;
+  justify-content: space-between;
+  
+}
+
+.cans-box p{
+  position: absolute;
+  top: 30px;
+  margin-left: 5px;
+  color: darkslategrey;
+}
+
+.cans-details button{
+  cursor: pointer;
+  border: none;
+  background: none; 
+  margin: 24px 0px;
+}
+.cans-details img{
+  width: auto;
+  width: 40px;
+  height: 40px;
+  
+}
+
+
+/* 
+
+.container-main {
+  margin: 20px 10px; /* Adjust the margin for smaller screens 
+}
+
+.container-main h2 {
+  font-weight: 800;
+  font-size: 24px; /* Decrease the font size for smaller screens 
+}
+
+.to-all-cans {
+  width: 8em; /* Decrease the width for smaller screens 
+  padding: 10px; /* Decrease the padding for smaller screens 
+  margin: 20px auto; /* Center the button horizontally 
+}
+
+.container-cans {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap; /* Allow cans to wrap to the next line 
+}
+
+.cans {
+  border: 2px solid black;
+  height: auto; /* Remove fixed height 
+  width: 45%; /* Adjust the width to occupy 45% of the container 
+  margin: 10px;
+}
+
+.cans img {
+  width: 100%;
+  height: auto; /* Maintain aspect ratio 
+}
+
+.cans-box {
+  margin: 4px;
+}
+
+.cans-details {
+  margin: 4px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center; /* Center the elements vertically 
+}
+
+.cans-box p {
+  color: darkslategrey;
+}
+
+.cans-details button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  margin: 0;
+  padding: 0;
+}
+
+.cans-details img {
+  width: 24px; /* Decrease the image size for smaller screens
+  height: 24px; /* Decrease the image size for smaller screens 
+}
+
+*/
