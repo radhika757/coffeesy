@@ -5,17 +5,50 @@ import Navbar from "./Navbar";
 import Merch from "./Shop/Merch";
 import Cans from "./Shop/Cans";
 import Cart from "./state/Cart";
+import CheckoutNavbar from "./CheckoutNavbar";
+
 
 function App() {
   return (
     <div className="App">
       <Router>
-        <Navbar />
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/merch" element={<Merch />} />
-          <Route path="/coffee-cans" element={<Cans />} />
-          <Route path="/cart" element={<Cart />} />
+          <Route
+            path="/"
+            element={
+              <>
+                <Navbar />
+                <Home />
+              </>
+            }
+          />
+          <Route
+            path="/merch"
+            element={
+              <>
+                <Navbar />
+                <Merch />
+              </>
+            }
+          />
+          <Route
+            path="/coffee-cans"
+            element={
+              <>
+                <Navbar />
+                <Cans />
+              </>
+            }
+          />
+          <Route
+            path="/cart"
+            element={
+              <>
+                <CheckoutNavbar />
+                <Cart />
+              </>
+            }
+          />
         </Routes>
       </Router>
     </div>
