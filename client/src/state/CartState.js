@@ -10,19 +10,19 @@ export const cartSlice = createSlice({
   reducers: {
     addItem: (state, action) => {
       const { id } = action.payload.id;
-      const { name } = action.payload.name;
-      const { price } = action.payload.price;
-      const { img } = action.payload.img;
+      //   const { name } = action.payload.name;
+      //   const { price } = action.payload.price;
+      //    const { img } = action.payload.img;
       const existingItem = state.value.find((item) => item.id === id);
       //   console.log(existingItem);
       if (existingItem) {
         existingItem.quantity += 1;
       } else {
-        state.value.unshift({ ...action.payload, quantity: 1 });  // adding a new item 
+        state.value.unshift({ ...action.payload, quantity: 1 }); // adding a new item
       }
       //   console.log(state.value.name);
-     // console.log(action.payload);
-    //   state.value.unshift(action.payload);
+      // console.log(action.payload);
+      //   state.value.unshift(action.payload);
     },
   },
 });

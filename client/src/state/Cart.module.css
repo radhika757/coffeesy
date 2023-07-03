@@ -1,23 +1,134 @@
-body{
-    /* background-color: aliceblue; */
-}
+/* body{
+    background-color: aliceblue;
+} */
 .main-container-box {
-    display: flex;
-    margin: 20px 15px;
-  
-  }
-  
-  .account-details {
-    width: 65%;
-    padding-right: 20px; 
-    margin-right: 32px;
-    border: 1px solid;
-    background-color: white;
-  }
-  
-  .order-details {
-    flex-grow: 1;
-    border: 1px solid;
-    background-color: white;
-  }
-  
+  display: flex;
+  margin: 20px 45px;
+}
+
+.account-details {
+  width: 65%;
+  padding-right: 20px;
+  margin-right: 32px;
+  border: 1px solid whitesmoke;
+  background-color: white;
+}
+
+.order-details {
+  flex-grow: 1;
+  border: 1px solid whitesmoke;
+  background-color: white;
+}
+
+.account {
+  display: flex;
+  margin-left: 0;
+  padding: 15px 40px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.account p {
+  color: #7e808c;
+  font-weight: 400;
+  margin-top: -16px;
+}
+
+.loginBox {
+  /* margin-top: 10px; */
+  padding: 5px 40px;
+  display: flex;
+}
+
+.loginBox1 {
+  display: inline-block;
+  font-weight: 400;
+  color: #7e808c;
+}
+.loginBox2 {
+  color: #6E260E;
+  font-weight: 500;
+  cursor: pointer;
+  margin-left: 5px;
+}
+
+.conditonal {
+  display: flex;
+  margin: 10px 40px;
+}
+
+.conditonalbtn1 {
+  background-color: #ffffff;
+  border-color: khaki;
+font-weight: 500;
+  color: khaki;
+  margin-right: 15px;
+  width: 22%;
+  height: 55px;
+  padding: 10px 15px;
+  cursor: pointer;
+}
+
+.conditonalbtn2{
+  background-color: khaki;
+  border-color: khaki;
+  font-weight: 500;
+  color: black;
+  width: 22%;
+  height: 55px;
+  padding: 10px 15px;
+  cursor: pointer;
+}
+.form {
+  display: flex;
+  flex-direction: column;
+  padding: 8px 40px;
+}
+.form input {
+  height: 70px;
+  width: 50%;
+  margin-bottom: 20px;
+}
+.form button {
+  width: 51%;
+  height: 55px;
+  padding: 10px 15px;
+  border: none;
+  background-color: khaki;
+  color: black;
+  font-weight: 800;
+}
+
+.form h6 {
+  display: flex;
+  color: #7e808c;
+  margin: 10px 0px;
+}
+
+.secondForm{
+  display: flex;
+  flex-direction: column;
+  padding: 8px 40px;
+  margin-top: 15px
+}
+.secondForm input {
+  height: 70px;
+  width: 50%;
+  margin-bottom: 0px;
+}
+.secondForm button {
+  width: 51%;
+  height: 55px;
+  padding: 10px 15px;
+  border: none;
+  background-color: khaki;
+  color: black;
+  font-weight: 800;
+}
+
+.secondForm h6 {
+  display: flex;
+  color: #7e808c;
+  margin: 10px 0px;
+}
