@@ -2,11 +2,12 @@
 import { useSelector } from "react-redux";
 import styles from "./Cart.module.css";
 import { useState, useEffect } from "react";
+// import img from '../assets/cans/'
 
 const Cart = () => {
   const items = useSelector((state) => state.cart.value);
-  // console.log(items);
-
+  console.log(items);
+  //console.log(items[0]);
   const [setLogin, getSetLogin] = useState();
   const [SignUp, setSignUp] = useState(false);
 
@@ -23,10 +24,9 @@ const Cart = () => {
     btn.style.display = "none";
     document.getElementById("signin").style.display = "block";
   }
-  
 
   useEffect(() => {
-    console.log(SignUp);
+    // console.log(SignUp);
   }, [SignUp]);
   return (
     <>
@@ -98,7 +98,7 @@ const Cart = () => {
                   placeholder="Name"
                   autoComplete="off"
                 />
-                <input
+                <input 
                   type="email"
                   name="email"
                   id="email"
@@ -106,13 +106,24 @@ const Cart = () => {
                   autoComplete="off"
                 />
                 <button>Continue</button>
-                <h6>By clicking on Continue, I accept the Terms & Conditions</h6>
+                <h6>
+                  By clicking on Continue, I accept the Terms & Conditions
+                </h6>
               </div>
             </form>
           </div>
         </div>
         <div className={styles["order-details"]}>
-          <h3>Hello</h3>
+          <div className={styles["cart"]}>
+            <h2>Your Cart</h2>
+          </div>
+          <div className={styles["cart-components"]}>
+            <div className={styles["cart-img"]}>
+              <img  src={require(`../assets/cans/${items[0]['img']}`)}
+              alt={items[0]['name']}/>
+            </div>
+            <div className={styles["cart-details"]}></div>
+          </div>
         </div>
       </div>
     </>

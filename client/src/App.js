@@ -6,7 +6,7 @@ import Merch from "./Shop/Merch";
 import Cans from "./Shop/Cans";
 import Cart from "./state/Cart";
 import CheckoutNavbar from "./CheckoutNavbar";
-
+import Account from "./Account/Account";
 
 function App() {
   return (
@@ -48,6 +48,16 @@ function App() {
                 <Cart />
               </>
             }
+          />
+
+          <Route
+          path="/account"
+          element={
+            <>
+            <Navbar/>
+            <Account/>
+            </>
+          }
           />
         </Routes>
       </Router>

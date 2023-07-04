@@ -132,3 +132,19 @@ font-weight: 500;
   color: #7e808c;
   margin: 10px 0px;
 }
+
+.cart{
+  margin: 40px 15px;
+}
+
+/* .cart-components{
+
+} */
+
+.cart-img{
+  width: 8em;
+  margin-left: 20px;
+} 
+.cart-img img{
+  width: 100%;
+}

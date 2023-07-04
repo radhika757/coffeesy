@@ -26,7 +26,7 @@ const Navbar = () => {
             <Link to="/">Contact</Link>
           </li>
           <li>
-            <Link to="/"> <img src={user} alt="user"/>  </Link>
+            <Link to="/account"> <img src={user} alt="user"/>  </Link>
           </li>
           <li>
             <Link to="/cart"><img src={cart} alt="cart" /></Link>

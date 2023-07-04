@@ -1,0 +1,15 @@
+.board {
+  display: flex;
+  justify-content: center;
+  border: 1px solid;
+  border-radius: 10px;
+  margin: 20px 30px;
+}
+
+.image {
+  border-right: 1px solid;
+}
+
+.formBox {
+  padding: 15px 15px;
+}
