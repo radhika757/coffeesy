@@ -8,8 +8,30 @@
 
 .image {
   border-right: 1px solid;
+  width: 40em;
 }
 
 .formBox {
   padding: 15px 15px;
+    width: 50em;
+    display: flex;
+    margin-left: 0;
+    flex-direction: column;
+    line-height: 0;
 }
+
+.linkB{
+  border: none;
+  background-color: transparent;
+  color: #6E260E;
+  font-weight: 400;
+  cursor: pointer;
+}
+
+/* .formBox h2{
+  margin-left: 0;
+  padding: 15px 40px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+} */
