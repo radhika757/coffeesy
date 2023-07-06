@@ -1,37 +1,77 @@
 .board {
   display: flex;
   justify-content: center;
-  border: 1px solid;
+  border: 1px solid whitesmoke;
   border-radius: 10px;
   margin: 20px 30px;
 }
 
-.image {
-  border-right: 1px solid;
+.image-container {
+  /* border-right: 1px solid; */
   width: 40em;
 }
 
-.formBox {
-  padding: 15px 15px;
-    width: 50em;
-    display: flex;
-    margin-left: 0;
-    flex-direction: column;
-    line-height: 0;
+.image-container img{
+  width: inherit;
 }
 
-.linkB{
+
+.formBox {
+  padding: 15px 35px;
+  width: 30em;
+  display: flex;
+  margin: 50px 25px;
+  /* padding: 15px 20px; */
+  flex-direction: column;
+  line-height: 0;
+  align-items: flex-start;
+}
+
+.formBoxp {
+  margin-top: 5px;
+}
+.formBoxp button {
+  font-weight: 600;
+}
+.linkB {
   border: none;
   background-color: transparent;
-  color: #6E260E;
+  color: #6e260e;
   font-weight: 400;
   cursor: pointer;
 }
 
-/* .formBox h2{
-  margin-left: 0;
-  padding: 15px 40px;
+form{
+  display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-} */
+}
+
+form button{
+  height: 55px;
+  padding: 10px 15px;
+  margin-top: 15px;
+  border: none;
+  background-color: khaki;
+  color: black;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+form h6{
+  display: flex;
+  color: #7e808c;
+  margin: 20px 0px;
+}
+input {
+  height: 70px;
+  width: 25em;
+  /* margin: 15px 0; */
+}
+
+.error-msge{
+  display: flex;
+  align-self: flex-start;
+  color: lightsalmon;
+  margin-left: 0;
+  font-size: 15px;
+}

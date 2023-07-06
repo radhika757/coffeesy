@@ -119,8 +119,8 @@ const Cart = () => {
           </div>
           <div className={styles["cart-components"]}>
             <div className={styles["cart-img"]}>
-              <img  src={require(`../assets/cans/${items[0]['img']}`)}
-              alt={items[0]['name']}/>
+              {/* <img  src={require(`../assets/cans/${items[0]['img']}`)}
+              alt={items[0]['name']}/> */}
             </div>
             <div className={styles["cart-details"]}></div>
           </div>
