@@ -27,10 +27,12 @@ const Account = () => {
     if (!num) {
       erMsge.style.display = "block";
       setError("Number required");
-    } else if (num.length !== 10) {
-      erMsge.style.display = "block";
-      setError("Enter a valid 11-digit number");
-    } else {
+    }
+    // else if (num.length !== 10) {
+    //   erMsge.style.display = "block";
+    //   setError("Enter a valid 11-digit number");
+    // }
+    else {
       let mynum = document.getElementById("number").value;
       checkNum();
       async function checkNum() {
@@ -43,7 +45,7 @@ const Account = () => {
           );
           console.log(response.data);
           setError(response.data);
-          if (response.data === "Please enter OTP") {
+          if (response.data === "OTP sent") {
             document.getElementById("otp-block").style.display = "block";
             console.log("Enter one time password");
           }
@@ -71,8 +73,26 @@ const Account = () => {
       errorMsge.style.display = "block";
       setError("Check your details");
     } else {
-      errorMsge.style.display = "block";
-      setError("Thanks");
+      createAcc();
+      async function createAcc() {
+        try {
+          const res = await Axios.post("http://localhost:3001/create-account", {
+            number,
+            name,
+            mail,
+          });
+          // console.log(res.data);
+          if(res.data === 'created'){
+             document.getElementById('otpBox').style.display = 'block';
+            //  setError("Enter OTP");
+          }
+        } catch (err) {
+          console.log(err);
+        }
+      }
+
+      // errorMsge.style.display = "block";
+      // setError("Thanks");
     }
   }
   return (
@@ -115,7 +135,7 @@ const Account = () => {
                     {error}
                   </h4>
                   <input
-                   style={{display:'none'}}
+                    style={{ display: "none" }}
                     type="tel"
                     placeholder="OTP"
                     max={5}
@@ -170,6 +190,11 @@ const Account = () => {
                   onChange={() => {
                     setError("");
                   }}
+                />
+                <input
+                  style={{ display: "none" }}
+                  id="otpBox"
+                  placeholder="Enter OTP"
                 />
                 <h4
                   className={styles["error-msge"]}
