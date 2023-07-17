@@ -81,18 +81,51 @@ const Account = () => {
             name,
             mail,
           });
-          // console.log(res.data);
-          if(res.data === 'created'){
-             document.getElementById('otpBox').style.display = 'block';
+          console.log(res.data);
+          if (res.data === "created") {
+            document.getElementById("otpBox").style.display = "block";
+            document.getElementById("sendAgain").style.display = "block";
             //  setError("Enter OTP");
           }
         } catch (err) {
           console.log(err);
         }
       }
-
       // errorMsge.style.display = "block";
-      // setError("Thanks");
+    }
+  }
+
+  // Send OTP again
+  function otpNotSent() {
+    // make an api just for generating an OTP
+    console.log("OTP re-generated");
+  }
+
+  // verify user Input
+  async function verifyOTP(event) {
+    let enteredOTP = event.target.value;
+    let userName = document.getElementById("name").value;
+    console.log(userName);
+    // console.log(enteredOTP);
+    if (enteredOTP.length > 5) {
+      console.log(enteredOTP);
+      console.log("in if ");
+
+      try {
+        const verify = await Axios.post(
+          "http://localhost:3001/getUserEnteredOTP",
+          {
+            enteredOTP,
+            userName,
+          }
+        );
+        console.log(verify.data);
+      } catch (errors) {
+        console.log(errors);
+      }
+    } else {
+      console.log("OTP does not match");
+      setError("OTP does not match");
     }
   }
   return (
@@ -194,8 +227,17 @@ const Account = () => {
                 <input
                   style={{ display: "none" }}
                   id="otpBox"
-                  placeholder="Enter OTP"
+                  placeholder="Enter OTP Eg: (28903)"
+                  maxLength={6}
+                  onChange={verifyOTP}
                 />
+                <button
+                  style={{ display: "none" }}
+                  id="sendAgain"
+                  onClick={otpNotSent}
+                >
+                  <p>OTP not received?</p>
+                </button>
                 <h4
                   className={styles["error-msge"]}
                   style={{ display: "none" }}

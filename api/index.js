@@ -144,10 +144,64 @@ app.post("/send-number", (req, res) => {
 //     });
 // });
 
+// create account
+app.post("/create-account", (req, res) => {
+  const name = req.body.name;
+  const number = req.body.number;
+  const recipientEmail = req.body.mail;
+  const date = new Date();
+  console.log(date);
+  const time = date.getMinutes();
+  const otp = Math.floor(100000 + Math.random() * 900000);
+  // console.log(otp);
+  const uniqueID = name.substring(0, 3) + number.toString().substring(3, 7);
+
+  // console.log(uniqueID);
+
+  connection.query(
+    "SELECT * FROM users WHERE email = ?",
+    [recipientEmail],
+    (err, results) => {
+      if (err) {
+        console.log(err);
+        res.status(500).send("Internal server error");
+        return;
+      }
+      if (results.length > 0) {
+        res.status(201).json("Email already exists, please Login");
+      } else {
+        connection.query(
+          "INSERT INTO unregistered (name, email,phone, date,otp) VALUES(?,?,?,?,?)",
+          [name, recipientEmail, number, time, otp],
+          (err, result) => {
+            if (err) {
+              console.log(err);
+              res.status(422).json("Couldnt create new user, Try again");
+            } else {
+              res.send("created");
+              // process.exit();
+              const subject = `Coffeesy`;
+              const message = `Complete registration with the OTP - ${otp}`;
+
+              try {
+                sendEmail(recipientEmail, subject, message);
+
+                console.log("Please check your mail");
+              } catch (error) {
+                console.log(err);
+              }
+            }
+          }
+        );
+      }
+    }
+  );
+});
+
 // Send Email function
 async function sendEmail(recipientEmail, subject, message) {
   const senderEmail = "raoradhika2000@gmail.com";
-  console.log("inside sendEmail");
+
   // creating a Nodemailer transporter using SMTP
   const transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
@@ -169,54 +223,35 @@ async function sendEmail(recipientEmail, subject, message) {
   try {
     const info = await transporter.sendMail(mailInfo);
     console.log("Email verification sent : ", info.messageId);
+
+    // res.send("")
   } catch (error) {
     console.log("Error sending email", error);
   }
 }
 
-// create account
-app.post("/create-account", (req, res) => {
-  const name = req.body.name;
-  const number = req.body.number;
-  const recipientEmail = req.body.mail;
-  const date = new Date();
-  const uniqueID = name.substring(0, 3) + number.toString().substring(3, 7);
-
-  // console.log(uniqueID);
-
+// verify otp from registration
+app.post("/getUserEnteredOTP", (req, res) => {
+ 
+  const userEnteredOTP = req.body.enteredOTP;
+  const userName = req.body.userName;
+  console.log(userEnteredOTP);
+  console.log(userName);
+  // process.exit();
+  //get the otp in the db
   connection.query(
-    "SELECT * FROM users WHERE email = ?",
-    [recipientEmail],
-    (err, results) => {
+    "SELECT otp FROM unregistered WHERE name = ?",
+    [userName],
+    (err, result) => {
       if (err) {
         console.log(err);
-        res.status(500).send("Internal server error");
-        return;
-      }
-      if (results.length > 0) {
-        res.status(201).json("Email already exists, please Login");
       } else {
-        connection.query(
-          "INSERT INTO users (name, phone, email, regDate, uniqueId) VALUES(?,?,?,?,?)",
-          [name, number, recipientEmail, date, uniqueID],
-          (err, result) => {
-            if (err) {
-              res.status(422).json("Couldnt create new user, Try again");
-            } else {
-              // res.send("created");
-              const otp = Math.floor(100000 + Math.random() * 900000);
-              const subject = `Coffeesy`;
-              const message = `Please access our best offers with the OTP - ${otp}`;
-              
-              try {
-                sendEmail(recipientEmail, subject, message);
-                console.log("Please check your mail");
-              } catch (error) {
-                console.log(err);
-              }
-            }
-          }
-        );
+        // console.log(result[0].otp);
+        if(result[0].otp === userEnteredOTP ){  
+          res.status(201).json("Welcome to coffeesy");
+        }else{
+          res.status(422).json("Incorrect OTP");
+        }
       }
     }
   );
