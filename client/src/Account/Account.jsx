@@ -21,31 +21,33 @@ const Account = () => {
 
   function loginFunction(e) {
     let erMsge = document.getElementById("error");
-    e.preventDefault();
-    let num = document.getElementById("number").value;
+    let email_regex = '^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$' ;
 
-    if (!num) {
+    e.preventDefault();
+    let email = document.getElementById("mail").value;
+
+    if (!email) {
       erMsge.style.display = "block";
-      setError("Number required");
+      setError("Email  required");
     }
-    // else if (num.length !== 10) {
-    //   erMsge.style.display = "block";
-    //   setError("Enter a valid 11-digit number");
-    // }
+    else if (!email.match(email_regex)) {
+      erMsge.style.display = "block";
+      setError("Enter valid email id");
+    }
     else {
-      let mynum = document.getElementById("number").value;
+      let myemail = document.getElementById("mail").value;
       checkNum();
       async function checkNum() {
         try {
           const response = await Axios.post(
-            "http://localhost:3001/send-number",
+            "http://localhost:3001/login",
             {
-              mynum,
+              myemail,
             }
           );
           console.log(response.data);
           setError(response.data);
-          if (response.data === "OTP sent") {
+          if (response.data === "Please enter OTP") {
             document.getElementById("otp-block").style.display = "block";
             console.log("Enter one time password");
           }
@@ -105,6 +107,9 @@ const Account = () => {
   async function verifyOTP(event) {
     let enteredOTP = event.target.value;
     let userName = document.getElementById("name").value;
+    let userEmail = document.getElementById("mail").value;
+    let userPhone = document.getElementById("num").value;
+
     console.log(userName);
     // console.log(enteredOTP);
     if (enteredOTP.length > 5) {
@@ -117,6 +122,8 @@ const Account = () => {
           {
             enteredOTP,
             userName,
+            userEmail,
+            userPhone
           }
         );
         console.log(verify.data);
@@ -152,10 +159,10 @@ const Account = () => {
                 <form method="POST">
                   <input
                     type="tel"
-                    placeholder="Phone number"
+                    placeholder="Registered Email"
                     max={10}
-                    name="number"
-                    id="number"
+                    name="mail"
+                    id="mail"
                     onChange={() => {
                       setError("");
                     }}

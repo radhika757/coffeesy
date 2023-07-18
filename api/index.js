@@ -78,11 +78,13 @@ app.get("/get_top_cans", (req, res) => {
 
 // check if phone number exists
 
-app.post("/send-number", (req, res) => {
-  const phonenumber = req.body.mynum;
+app.post("/login", (req, res) => {
+  const emailid = req.body.myemail;
+  const otp = Math.floor(100000 + Math.random() * 900000);
+
   connection.query(
-    "SELECT * FROM users WHERE phone = ?",
-    [phonenumber],
+    "SELECT * FROM users WHERE email = ?",
+    [emailid],
     (err, results) => {
       if (err) {
         console.log(err);
@@ -90,12 +92,21 @@ app.post("/send-number", (req, res) => {
         return;
       }
       if (!results.length > 0) {
-        res.status(201).json("Number doesn't exist");
+        res.status(201).json("Email id not found, Please register");
       } else {
-        res.status(201).json("Please enter OTP");
-        // console.log("Number exists");
+        console.log(results);
+        const subject = `Coffeesy - LogIn`;
+        const message = `Login with the OTP - ${otp}`;
 
-        // const otp = Math.floor(100000 + Math.random() * 900000);
+        try {
+          sendEmail(emailid, subject, message);
+        } catch (err) {
+          console.log("Error", err);
+          res.send("Error");
+        }
+        res.send("Please enter OTP");
+        console.log("Email-id exists, mail sent");
+
         // client.messages
         //   .create({
         //     body: `Your OTP for Coffeesy login is ${otp}`,
@@ -153,10 +164,8 @@ app.post("/create-account", (req, res) => {
   console.log(date);
   const time = date.getMinutes();
   const otp = Math.floor(100000 + Math.random() * 900000);
-  // console.log(otp);
-  const uniqueID = name.substring(0, 3) + number.toString().substring(3, 7);
 
-  // console.log(uniqueID);
+  const uniqueID = name.substring(0, 3) + number.toString().substring(3, 7);
 
   connection.query(
     "SELECT * FROM users WHERE email = ?",
@@ -181,11 +190,12 @@ app.post("/create-account", (req, res) => {
               res.send("created");
               // process.exit();
               const subject = `Coffeesy`;
-              const message = `Complete registration with the OTP - ${otp}`;
+              const message = `Complete registration with the OTP - ${otp}.
+              OTP valid only for 5 minutes.
+              `;
 
               try {
                 sendEmail(recipientEmail, subject, message);
-
                 console.log("Please check your mail");
               } catch (error) {
                 console.log(err);
@@ -223,8 +233,6 @@ async function sendEmail(recipientEmail, subject, message) {
   try {
     const info = await transporter.sendMail(mailInfo);
     console.log("Email verification sent : ", info.messageId);
-
-    // res.send("")
   } catch (error) {
     console.log("Error sending email", error);
   }
@@ -232,25 +240,48 @@ async function sendEmail(recipientEmail, subject, message) {
 
 // verify otp from registration
 app.post("/getUserEnteredOTP", (req, res) => {
- 
   const userEnteredOTP = req.body.enteredOTP;
   const userName = req.body.userName;
-  console.log(userEnteredOTP);
-  console.log(userName);
-  // process.exit();
+  const userPhone = req.body.userPhone;
+  const useremail = req.body.userEmail;
+  const regDate = new Date();
+  const Enteredtime = regDate.getMinutes();
+  const uniqueID =
+    userName.substring(0, 3) + userPhone.toString().substring(3, 7);
+  
   //get the otp in the db
   connection.query(
-    "SELECT otp FROM unregistered WHERE name = ?",
+    "SELECT * FROM unregistered WHERE name = ?",
     [userName],
     (err, result) => {
       if (err) {
         console.log(err);
       } else {
-        // console.log(result[0].otp);
-        if(result[0].otp === userEnteredOTP ){  
-          res.status(201).json("Welcome to coffeesy");
-        }else{
-          res.status(422).json("Incorrect OTP");
+        const reqTime = result[0].date;
+        if (reqTime > Enteredtime + 5) {
+          console.log(Enteredtime + 5);
+
+          res.send("OTP Expired");
+        } else {
+          if (result[0].otp === userEnteredOTP) {
+            console.log("welcome");
+
+            connection.query(
+              "INSERT INTO users (name,phone,email,regDate,uniqueID) VALUES (?,?,?,?,?)",
+              [userName, userPhone, useremail, regDate, uniqueID],
+              (err, result) => {
+                if (err) console.log(err);
+                else {
+                  console.log("User created!");
+                  //send a welcome mail to the user function
+                  res.send("Welcome to Coffeesy");
+                }
+              }
+            );
+            //  res.status(201).json("Welcome to coffeesy");
+          } else {
+            res.status(422).json("Incorrect OTP");
+          }
         }
       }
     }
