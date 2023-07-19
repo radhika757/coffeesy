@@ -1,0 +1,25 @@
+.footer-box {
+  display: flex;
+  flex-direction: column;
+  margin: 20px 30px;
+  background-color: black;
+  color: #ffffff;
+  border-radius: 30px;
+}
+
+.footer-box-one {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-content: center;
+}
+
+.footer-box-one img{
+    width: 30%;
+}
+.footer-content{
+    display: flex;
+}
+.footer-box-two {
+  border-top: 1px solid blanchedalmond;
+}

@@ -7,6 +7,7 @@ import Cans from "./Shop/Cans";
 import Cart from "./state/Cart";
 import CheckoutNavbar from "./CheckoutNavbar";
 import Account from "./Account/Account";
+import Footer from "./Footer";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
               <>
                 <Navbar />
                 <Home />
+                <Footer/>
               </>
             }
           />
@@ -28,6 +30,7 @@ function App() {
               <>
                 <Navbar />
                 <Merch />
+                <Footer/>
               </>
             }
           />
@@ -37,6 +40,7 @@ function App() {
               <>
                 <Navbar />
                 <Cans />
+                <Footer/>
               </>
             }
           />
@@ -56,6 +60,7 @@ function App() {
             <>
             <Navbar/>
             <Account/>
+            <Footer/>
             </>
           }
           />

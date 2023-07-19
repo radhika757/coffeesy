@@ -1,10 +1,17 @@
 import styles from "./Account.module.css";
-import { useState, useContext } from "react";
+import { useState, useEffect } from "react";
 import coffeeImg from "../assets/wavy.jpg";
 import pattern from "../assets/icon-signup.png";
 import Axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { login } from "../state/authState";
+import { logout } from "../state/authState";
 
 const Account = () => {
+  const dispatch = useDispatch();
+  const authStatus = useSelector((state) => state.auth.isAuthenticated);
+  console.log(authStatus);
+
   const [loginForm, setLoginForm] = useState(true);
   const [registerForm, setRegisterForm] = useState(false);
   const [error, setError] = useState("");
@@ -21,7 +28,7 @@ const Account = () => {
 
   function loginFunction(e) {
     let erMsge = document.getElementById("error");
-    let email_regex = '^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$' ;
+    let email_regex = "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$";
 
     e.preventDefault();
     let email = document.getElementById("mail").value;
@@ -29,22 +36,17 @@ const Account = () => {
     if (!email) {
       erMsge.style.display = "block";
       setError("Email  required");
-    }
-    else if (!email.match(email_regex)) {
+    } else if (!email.match(email_regex)) {
       erMsge.style.display = "block";
       setError("Enter valid email id");
-    }
-    else {
+    } else {
       let myemail = document.getElementById("mail").value;
       checkNum();
       async function checkNum() {
         try {
-          const response = await Axios.post(
-            "http://localhost:3001/login",
-            {
-              myemail,
-            }
-          );
+          const response = await Axios.post("http://localhost:3001/login", {
+            myemail,
+          });
           console.log(response.data);
           setError(response.data);
           if (response.data === "Please enter OTP") {
@@ -123,7 +125,7 @@ const Account = () => {
             enteredOTP,
             userName,
             userEmail,
-            userPhone
+            userPhone,
           }
         );
         console.log(verify.data);
@@ -137,130 +139,136 @@ const Account = () => {
   }
   return (
     <>
-      <div className={styles.board}>
-        <div className={styles["image-container"]}>
-          <img src={coffeeImg} alt="Image" className="wavy-image" />
-        </div>
-        {loginForm && (
-          <>
+      {authStatus ? (
+        <>
+          <p>Welcome user!</p>
+        </>
+      ) : (
+        <div className={styles.board}>
+          <div className={styles["image-container"]}>
+            <img src={coffeeImg} alt="Image" className="wavy-image" />
+          </div>
+          {loginForm && (
+            <>
+              <div className={styles.formBox}>
+                <h2>Login</h2>
+                <p className={styles.formBoxp}>
+                  or
+                  <button
+                    type="button"
+                    onClick={createAccount}
+                    className={styles.linkB}
+                  >
+                    create an account
+                  </button>
+                </p>
+                <div className={styles.form}>
+                  <form method="POST">
+                    <input
+                      type="tel"
+                      placeholder="Registered Email"
+                      max={10}
+                      name="mail"
+                      id="mail"
+                      onChange={() => {
+                        setError("");
+                      }}
+                    />
+                    <h4
+                      className={styles["error-msge"]}
+                      style={{ display: "none" }}
+                      id="error"
+                    >
+                      {error}
+                    </h4>
+                    <input
+                      style={{ display: "none" }}
+                      type="tel"
+                      placeholder="OTP"
+                      max={5}
+                      name="otp-block"
+                      id="otp-block"
+                      // onChange={() => {
+                      //   setError("");
+                      // }}
+                    />
+                    <button onClick={loginFunction}>Login</button>
+                    <h6>By Logging In, I accept the Terms & Conditions</h6>
+                  </form>
+                </div>
+              </div>
+            </>
+          )}
+          {registerForm && (
             <div className={styles.formBox}>
-              <h2>Login</h2>
+              <h2>Sign In</h2>
               <p className={styles.formBoxp}>
                 or
-                <button
-                  type="button"
-                  onClick={createAccount}
-                  className={styles.linkB}
-                >
-                  create an account
+                <button onClick={loginAccount} className={styles.linkB}>
+                  Log to your account
                 </button>
               </p>
               <div className={styles.form}>
                 <form method="POST">
                   <input
                     type="tel"
-                    placeholder="Registered Email"
+                    placeholder="Phone number"
                     max={10}
-                    name="mail"
+                    name="number"
+                    id="num"
+                    onChange={() => {
+                      setError("");
+                    }}
+                  />
+                  <input
+                    type="text"
+                    placeholder="Name"
+                    name="name"
+                    id="name"
+                    onChange={() => {
+                      setError("");
+                    }}
+                  />
+                  <input
+                    type="text"
+                    placeholder="Email"
+                    name="email"
                     id="mail"
                     onChange={() => {
                       setError("");
                     }}
                   />
+                  <input
+                    style={{ display: "none" }}
+                    id="otpBox"
+                    placeholder="Enter OTP Eg: (28903)"
+                    maxLength={6}
+                    onChange={verifyOTP}
+                  />
+                  <button
+                    style={{ display: "none" }}
+                    id="sendAgain"
+                    onClick={otpNotSent}
+                  >
+                    <p>OTP not received?</p>
+                  </button>
                   <h4
                     className={styles["error-msge"]}
                     style={{ display: "none" }}
-                    id="error"
+                    id="registerError"
                   >
                     {error}
                   </h4>
-                  <input
-                    style={{ display: "none" }}
-                    type="tel"
-                    placeholder="OTP"
-                    max={5}
-                    name="otp-block"
-                    id="otp-block"
-                    // onChange={() => {
-                    //   setError("");
-                    // }}
-                  />
-                  <button onClick={loginFunction}>Login</button>
-                  <h6>By Logging In, I accept the Terms & Conditions</h6>
+                  <button onClick={continueFunction}>Continue</button>
+                  <h6>
+                    By clicking on Continue, I accept the Terms & Conditions
+                  </h6>
                 </form>
               </div>
             </div>
-          </>
-        )}
-        {registerForm && (
-          <div className={styles.formBox}>
-            <h2>Sign In</h2>
-            <p className={styles.formBoxp}>
-              or
-              <button onClick={loginAccount} className={styles.linkB}>
-                Log to your account
-              </button>
-            </p>
-            <div className={styles.form}>
-              <form method="POST">
-                <input
-                  type="tel"
-                  placeholder="Phone number"
-                  max={10}
-                  name="number"
-                  id="num"
-                  onChange={() => {
-                    setError("");
-                  }}
-                />
-                <input
-                  type="text"
-                  placeholder="Name"
-                  name="name"
-                  id="name"
-                  onChange={() => {
-                    setError("");
-                  }}
-                />
-                <input
-                  type="text"
-                  placeholder="Email"
-                  name="email"
-                  id="mail"
-                  onChange={() => {
-                    setError("");
-                  }}
-                />
-                <input
-                  style={{ display: "none" }}
-                  id="otpBox"
-                  placeholder="Enter OTP Eg: (28903)"
-                  maxLength={6}
-                  onChange={verifyOTP}
-                />
-                <button
-                  style={{ display: "none" }}
-                  id="sendAgain"
-                  onClick={otpNotSent}
-                >
-                  <p>OTP not received?</p>
-                </button>
-                <h4
-                  className={styles["error-msge"]}
-                  style={{ display: "none" }}
-                  id="registerError"
-                >
-                  {error}
-                </h4>
-                <button onClick={continueFunction}>Continue</button>
-                <h6>
-                  By clicking on Continue, I accept the Terms & Conditions
-                </h6>
-              </form>
-            </div>
-          </div>
-        )}
-      </div>
+          )}
+        </div>
+      )}
     </>
   );
 };
