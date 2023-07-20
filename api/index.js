@@ -240,15 +240,15 @@ async function sendEmail(recipientEmail, subject, message) {
 
 // verify otp from registration
 app.post("/getUserEnteredOTP", (req, res) => {
+  // console.log('inside');
   const userEnteredOTP = req.body.enteredOTP;
   const userName = req.body.userName;
   const userPhone = req.body.userPhone;
   const useremail = req.body.userEmail;
-  const regDate = new Date();
-  const Enteredtime = regDate.getMinutes();
+  const Enteredtime = new Date();
   const uniqueID =
     userName.substring(0, 3) + userPhone.toString().substring(3, 7);
-  
+
   //get the otp in the db
   connection.query(
     "SELECT * FROM unregistered WHERE name = ?",
@@ -257,32 +257,51 @@ app.post("/getUserEnteredOTP", (req, res) => {
       if (err) {
         console.log(err);
       } else {
-        const reqTime = result[0].date;
-        if (reqTime > Enteredtime + 5) {
-          console.log(Enteredtime + 5);
-
-          res.send("OTP Expired");
-        } else {
-          if (result[0].otp === userEnteredOTP) {
-            console.log("welcome");
-
-            connection.query(
-              "INSERT INTO users (name,phone,email,regDate,uniqueID) VALUES (?,?,?,?,?)",
-              [userName, userPhone, useremail, regDate, uniqueID],
-              (err, result) => {
-                if (err) console.log(err);
-                else {
-                  console.log("User created!");
-                  //send a welcome mail to the user function
-                  res.send("Welcome to Coffeesy");
-                }
+        // const reqTime = new Date(result[0].date);
+        // console.log(reqTime,'reqTime');
+        // const modifiedReqTime = new Date(reqTime);
+        // console.log(modifiedReqTime,'modified');
+        // modifiedReqTime.setMinutes(reqTime.getMinutes() + 5);
+        // if (modifiedReqTime > Enteredtime) {
+        //   console.log(reqTime + 5);
+        //   res.send("OTP Expired");
+        // } else {
+        if (result[0].otp === userEnteredOTP) {
+          // console.log("welcome");
+          connection.query(
+            "INSERT INTO users (name,phone,email,regDate,uniqueID) VALUES (?,?,?,?,?)",
+            [userName, userPhone, useremail, Enteredtime, uniqueID],
+            (err, result) => {
+              if (err) console.log(err);
+              else {
+                // console.log("User created!");
+                //send a welcome mail to the user function
+                res
+                  .status(200)
+                  .json({
+                    success: true,
+                    message: "successfull",
+                    data: result,
+                  });
+                // res.send("Welcome to Coffeesy");
               }
-            );
-            //  res.status(201).json("Welcome to coffeesy");
-          } else {
-            res.status(422).json("Incorrect OTP");
-          }
+            }
+          );
+          connection.query(
+            "DELETE FROM unregistered WHERE email = ?",
+            [useremail],
+            (err, res) => {
+              if (err) console.log("Cannot delete the unregistered user", err);
+              else {
+                console.log("deleted successfully");
+              }
+            }
+          );
+          //  res.status(201).json("Welcome to coffeesy");
+        } else {
+          res.status(422).json("Incorrect OTP");
         }
+        // }
       }
     }
   );

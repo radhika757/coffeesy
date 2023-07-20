@@ -1,5 +1,5 @@
 import "./App.css";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes,Switch } from "react-router-dom";
 import Home from "./Home/Home";
 import Navbar from "./Navbar";
 import Merch from "./Shop/Merch";
@@ -8,6 +8,8 @@ import Cart from "./state/Cart";
 import CheckoutNavbar from "./CheckoutNavbar";
 import Account from "./Account/Account";
 import Footer from "./Footer";
+import ProtectedRoutes from "./ProtectedRoutes";
+import Welcome from "./Protected-Routes/Welcome";
 
 function App() {
   return (
@@ -64,6 +66,9 @@ function App() {
             </>
           }
           />
+
+          {/* Protected routes */}
+          <ProtectedRoutes exact path='/welcome' element={<Welcome/>} />
         </Routes>
       </Router>
     </div>

@@ -4,11 +4,14 @@ import coffeeImg from "../assets/wavy.jpg";
 import pattern from "../assets/icon-signup.png";
 import Axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { login } from "../state/authState";
 import { logout } from "../state/authState";
+import { registered } from "../state/authState";
 
 const Account = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const authStatus = useSelector((state) => state.auth.isAuthenticated);
   console.log(authStatus);
 
@@ -89,37 +92,33 @@ const Account = () => {
           if (res.data === "created") {
             document.getElementById("otpBox").style.display = "block";
             document.getElementById("sendAgain").style.display = "block";
-            //  setError("Enter OTP");
+            document.getElementById("continue").style.display = "none";
+            document.getElementById("submit").style.display = "block";
+           
           }
         } catch (err) {
           console.log(err);
         }
       }
-      // errorMsge.style.display = "block";
     }
   }
 
   // Send OTP again
   function otpNotSent() {
-    // make an api just for generating an OTP
     console.log("OTP re-generated");
   }
 
   // verify user Input
-  async function verifyOTP(event) {
-    let enteredOTP = event.target.value;
+  const verifyOTP = async (event) => {
+    event.preventDefault(); 
+    let enteredOTP = document.getElementById("otpBox").value;
     let userName = document.getElementById("name").value;
     let userEmail = document.getElementById("mail").value;
     let userPhone = document.getElementById("num").value;
 
-    console.log(userName);
-    // console.log(enteredOTP);
     if (enteredOTP.length > 5) {
-      console.log(enteredOTP);
-      console.log("in if ");
-
       try {
-        const verify = await Axios.post(
+        const response = await Axios.post(
           "http://localhost:3001/getUserEnteredOTP",
           {
             enteredOTP,
@@ -128,15 +127,21 @@ const Account = () => {
             userPhone,
           }
         );
-        console.log(verify.data);
-      } catch (errors) {
-        console.log(errors);
+        console.log(response.data.success); //true => isAuthenticated(true)
+        if(response.data.success === true){
+          dispatch(registered());
+          navigate('/Welcome');
+        }
+      } catch (error) {
+        console.log(error);
+        setError("Error occurred during API call.");
       }
+    } else if (enteredOTP === "") {
+      setError("Enter OTP");
     } else {
-      console.log("OTP does not match");
       setError("OTP does not match");
     }
-  }
+  };
   return (
     <>
       {authStatus ? (
@@ -243,7 +248,7 @@ const Account = () => {
                     id="otpBox"
                     placeholder="Enter OTP Eg: (28903)"
                     maxLength={6}
-                    onChange={verifyOTP}
+                    // onChange={verifyOTP}
                   />
                   <button
                     style={{ display: "none" }}
@@ -259,7 +264,16 @@ const Account = () => {
                   >
                     {error}
                   </h4>
-                  <button onClick={continueFunction}>Continue</button>
+                  <button id="continue" onClick={continueFunction}>
+                    Continue
+                  </button>
+                  <button
+                    id="submit"
+                    style={{ display: "none" }}
+                    onClick={verifyOTP}
+                  >
+                    Submit
+                  </button>
                   <h6>
                     By clicking on Continue, I accept the Terms & Conditions
                   </h6>
