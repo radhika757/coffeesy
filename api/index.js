@@ -1,11 +1,9 @@
 // configuring Twilio
-const twilio = require("twilio");
-const accountSid = "AC537f9873e1e8dde64c5ed76dfcc2f3c3";
-const authToken = "288597499f5677b899162968e09a60e8";
-const verifySid = "VA8f7209995843f665ff944f900f6ce221";
-const client = twilio(accountSid, authToken);
-const axios = require("axios");
-
+// const twilio = require("twilio");
+// const accountSid = "AC537f9873e1e8dde64c5ed76dfcc2f3c3";
+// const authToken = "288597499f5677b899162968e09a60e8";
+// const verifySid = "VA8f7209995843f665ff944f900f6ce221";
+// const client = twilio(accountSid, authToken);
 const express = require("express");
 const app = express();
 const cors = require("cors");
@@ -14,6 +12,8 @@ const mysql = require("mysql2");
 const bodyparser = require("body-parser");
 
 const nodemailer = require("nodemailer");
+
+const jwt = require("jsonwebtoken");
 
 app.use(express.json());
 app.use(cors("http://localhost:3000/"));
@@ -81,7 +81,8 @@ app.get("/get_top_cans", (req, res) => {
 app.post("/login", (req, res) => {
   const emailid = req.body.myemail;
   const otp = Math.floor(100000 + Math.random() * 900000);
-
+  const date = new Date();
+  const time = date.getMinutes();
   connection.query(
     "SELECT * FROM users WHERE email = ?",
     [emailid],
@@ -100,31 +101,54 @@ app.post("/login", (req, res) => {
 
         try {
           sendEmail(emailid, subject, message);
+          connection.query(
+            "INSERT INTO unregistered (name, email,phone, date,otp) VALUES(?,?,?,?,?)",
+            ["NULL", emailid, "NULL", time, otp],
+            (err, result) => {
+              if (err) console.log(err);
+              else {
+                console.log(result);
+              }
+            }
+          );
         } catch (err) {
           console.log("Error", err);
           res.send("Error");
         }
         res.send("Please enter OTP");
-        console.log("Email-id exists, mail sent");
-
-        // client.messages
-        //   .create({
-        //     body: `Your OTP for Coffeesy login is ${otp}`,
-        //     from: "+919819220635",
-        //     to: phonenumber,
-        //   })
-        //   .then((message) => {
-        //     console.log(message);
-        //     res.send("OTP sent");
-        //   })
-        //   .catch((error) => {
-        //     console.log(error);
-        //     res.status(500).json("Error sending OTP");
-        //   });
+        // console.log("Email-id exists, mail sent");
       }
     }
   );
 });
+
+// otp authentication - log in
+app.post("/verify-otp", (req, res) => {
+  const UserOtp = req.body.myOtp;
+  const userMail = req.body.userMail;
+  console.log(userMail);
+  console.log(UserOtp);
+  connection.query(
+    "SELECT * FROM unregistered WHERE email = ? ",
+    [userMail],
+    (err, result) => {
+      if (!err) {
+        // console.log("Here is the credientials",result);
+        // res.send('OTP fetched');
+        if (UserOtp === result.otp) {
+          res.status(201).json("OTP matched");
+        } else {
+          res.status(500).json("OTP mis matched");
+        }
+      } else {
+        console.log(err);
+        res.send(err);
+      }
+    }
+  );
+});
+
+
 
 // send sms
 // app.post("/send-otp", (req, res) => {
@@ -276,13 +300,11 @@ app.post("/getUserEnteredOTP", (req, res) => {
               else {
                 // console.log("User created!");
                 //send a welcome mail to the user function
-                res
-                  .status(200)
-                  .json({
-                    success: true,
-                    message: "successfull",
-                    data: result,
-                  });
+                res.status(200).json({
+                  success: true,
+                  message: "successfull",
+                  data: result,
+                });
                 // res.send("Welcome to Coffeesy");
               }
             }

@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { login } from "../state/authState";
 import { logout } from "../state/authState";
 import { registered } from "../state/authState";
+import axios from "axios";
 
 const Account = () => {
   const dispatch = useDispatch();
@@ -53,19 +54,42 @@ const Account = () => {
           console.log(response.data);
           setError(response.data);
           if (response.data === "Please enter OTP") {
-            document.getElementById("otp-block").style.display = "block";
-            console.log("Enter one time password");
+            document.getElementById("otp_block").style.display = "block";
+            document.getElementById("loginbtn").style.display = "none";
+            document.getElementById("sendOtpLog").style.display = "block";
+            // console.log("Enter one time password");
           }
         } catch (error) {
           setError("Request cannot be sent");
           console.log(error);
         }
       }
-
       erMsge.style.display = "block";
     }
   }
 
+  // after log in
+  function sendOtp(event) {
+    // console.log("send");
+    event.preventDefault();
+    let myOtp = document.getElementById("otp_block").value;
+    let userMail = document.getElementById("mail").value;
+    console.log(myOtp);
+    verifyOTP();
+    async function verifyOTP() {
+      try {
+        const response = await Axios.post("http://localhost:3001/verify-otp", {
+          myOtp,
+          userMail
+        });
+        console.log(response);
+      } catch (errors) {
+        setError(errors);
+        console.log('Error verifying OTP: ' + errors);
+      }
+      
+    }
+  }
   function continueFunction(e) {
     e.preventDefault();
     let errorMsge = document.getElementById("registerError");
@@ -94,7 +118,6 @@ const Account = () => {
             document.getElementById("sendAgain").style.display = "block";
             document.getElementById("continue").style.display = "none";
             document.getElementById("submit").style.display = "block";
-           
           }
         } catch (err) {
           console.log(err);
@@ -110,7 +133,7 @@ const Account = () => {
 
   // verify user Input
   const verifyOTP = async (event) => {
-    event.preventDefault(); 
+    event.preventDefault();
     let enteredOTP = document.getElementById("otpBox").value;
     let userName = document.getElementById("name").value;
     let userEmail = document.getElementById("mail").value;
@@ -128,9 +151,9 @@ const Account = () => {
           }
         );
         console.log(response.data.success); //true => isAuthenticated(true)
-        if(response.data.success === true){
+        if (response.data.success === true) {
           dispatch(registered());
-          navigate('/Welcome');
+          navigate("/Welcome");
         }
       } catch (error) {
         console.log(error);
@@ -191,13 +214,19 @@ const Account = () => {
                       type="tel"
                       placeholder="OTP"
                       max={5}
-                      name="otp-block"
-                      id="otp-block"
-                      // onChange={() => {
-                      //   setError("");
-                      // }}
+                      name="otp_block"
+                      id="otp_block"
                     />
-                    <button onClick={loginFunction}>Login</button>
+                    <button onClick={loginFunction} id="loginbtn">
+                      Login
+                    </button>
+                    <button
+                      onClick={sendOtp}
+                      style={{ display: "none" }}
+                      id="sendOtpLog"
+                    >
+                      Send
+                    </button>
                     <h6>By Logging In, I accept the Terms & Conditions</h6>
                   </form>
                 </div>

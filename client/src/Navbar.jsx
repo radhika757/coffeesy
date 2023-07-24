@@ -23,7 +23,7 @@ const Navbar = () => {
         </li>
         <ul>
           <li>
-            <Link to="/">Contact</Link>
+            <Link to="/contact">Contact</Link>
           </li>
           <li>
             <Link to="/account"> <img src={user} alt="user"/>  </Link>

@@ -1,5 +1,10 @@
 import "./App.css";
-import { BrowserRouter as Router, Route, Routes,Switch } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Switch,
+} from "react-router-dom";
 import Home from "./Home/Home";
 import Navbar from "./Navbar";
 import Merch from "./Shop/Merch";
@@ -22,7 +27,7 @@ function App() {
               <>
                 <Navbar />
                 <Home />
-                <Footer/>
+                <Footer />
               </>
             }
           />
@@ -32,7 +37,7 @@ function App() {
               <>
                 <Navbar />
                 <Merch />
-                <Footer/>
+                <Footer />
               </>
             }
           />
@@ -42,10 +47,21 @@ function App() {
               <>
                 <Navbar />
                 <Cans />
-                <Footer/>
+                <Footer />
               </>
             }
           />
+
+          <Route
+            path="/contact"
+            element={
+              <>
+                <Navbar />
+                <Footer />
+              </>
+            }
+          />
+
           <Route
             path="/cart"
             element={
@@ -57,18 +73,18 @@ function App() {
           />
 
           <Route
-          path="/account"
-          element={
-            <>
-            <Navbar/>
-            <Account/>
-            <Footer/>
-            </>
-          }
+            path="/account"
+            element={
+              <>
+                <Navbar />
+                <Account />
+                <Footer />
+              </>
+            }
           />
 
           {/* Protected routes */}
-          <ProtectedRoutes exact path='/welcome' element={<Welcome/>} />
+          {/* <ProtectedRoutes exact path='/welcome' element={<Welcome/>} /> */}
         </Routes>
       </Router>
     </div>
