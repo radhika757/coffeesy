@@ -8,13 +8,12 @@ import { useNavigate } from "react-router-dom";
 import { login } from "../state/authState";
 import { logout } from "../state/authState";
 import { registered } from "../state/authState";
-import axios from "axios";
 
 const Account = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const authStatus = useSelector((state) => state.auth.isAuthenticated);
-  console.log(authStatus);
+  // console.log(authStatus);
 
   const [loginForm, setLoginForm] = useState(true);
   const [registerForm, setRegisterForm] = useState(false);
@@ -80,14 +79,27 @@ const Account = () => {
       try {
         const response = await Axios.post("http://localhost:3001/verify-otp", {
           myOtp,
-          userMail
+          userMail,
         });
-        console.log(response);
+
+        const { token, userdata } = response.data;
+        console.log(token);
+        console.log(userdata);
+
+        document.cookie = `jwt=${token}; path='/'; HttpOnly`;
+        document.cookie = `userData=${JSON.stringify(
+          userdata
+        )}; path='/'; HttpOnly`;
+        if (response) {
+          dispatch(login);
+          navigate('/');
+        }
+        // authStatus(true);
+        
       } catch (errors) {
         setError(errors);
-        console.log('Error verifying OTP: ' + errors);
+        console.log("Error verifying OTP: " + errors);
       }
-      
     }
   }
   function continueFunction(e) {

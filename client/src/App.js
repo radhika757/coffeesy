@@ -6,15 +6,14 @@ import {
   Switch,
 } from "react-router-dom";
 import Home from "./Home/Home";
-import Navbar from "./Navbar";
 import Merch from "./Shop/Merch";
-import Cans from "./Shop/Cans";
 import Cart from "./state/Cart";
 import CheckoutNavbar from "./CheckoutNavbar";
 import Account from "./Account/Account";
-import Footer from "./Footer";
-import ProtectedRoutes from "./ProtectedRoutes";
-import Welcome from "./Protected-Routes/Welcome";
+import ProtectedRoutes from "./Protected-Routes/ProtectedRoutes";
+import AppLayout from "./AppLayout";
+import AccountDetails from "./Account/AccountDetails";
+import Contact from "./Contact";
 
 function App() {
   return (
@@ -22,6 +21,24 @@ function App() {
       <Router>
         <Routes>
           <Route
+            element={
+              <ProtectedRoutes>
+                <AppLayout />
+              </ProtectedRoutes>
+            }
+          >
+            <Route path="/merch" element={<Merch />} />
+            <Route path="/cart" element={<Cart />} />
+            <Route path="/account/:name" element={<AccountDetails />} />
+            {/* More protected routes */}
+          </Route>
+          <Route element={<AppLayout />}>
+            <Route index path="/" element={<Home />} />
+            <Route path="/account" element={<Account />} />
+            <Route path="/contact" element={<Contact />} />
+          </Route>
+
+          {/* <Route
             path="/"
             element={
               <>
@@ -31,60 +48,7 @@ function App() {
               </>
             }
           />
-          <Route
-            path="/merch"
-            element={
-              <>
-                <Navbar />
-                <Merch />
-                <Footer />
-              </>
-            }
-          />
-          <Route
-            path="/coffee-cans"
-            element={
-              <>
-                <Navbar />
-                <Cans />
-                <Footer />
-              </>
-            }
-          />
-
-          <Route
-            path="/contact"
-            element={
-              <>
-                <Navbar />
-                <Footer />
-              </>
-            }
-          />
-
-          <Route
-            path="/cart"
-            element={
-              <>
-                <CheckoutNavbar />
-                <Cart />
-              </>
-            }
-          />
-
-          <Route
-            path="/account"
-            element={
-              <>
-                <Navbar />
-                <Account />
-                <Footer />
-              </>
-            }
-          />
-
-          {/* Protected routes */}
-          {/* <ProtectedRoutes exact path='/welcome' element={<Welcome/>} /> */}
+     */}
         </Routes>
       </Router>
     </div>

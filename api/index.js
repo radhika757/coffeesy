@@ -14,6 +14,7 @@ const bodyparser = require("body-parser");
 const nodemailer = require("nodemailer");
 
 const jwt = require("jsonwebtoken");
+const crypto = require("crypto");
 
 app.use(express.json());
 app.use(cors("http://localhost:3000/"));
@@ -126,19 +127,46 @@ app.post("/login", (req, res) => {
 app.post("/verify-otp", (req, res) => {
   const UserOtp = req.body.myOtp;
   const userMail = req.body.userMail;
-  console.log(userMail);
-  console.log(UserOtp);
+
+  // console.log(UserOtp);
   connection.query(
     "SELECT * FROM unregistered WHERE email = ? ",
     [userMail],
     (err, result) => {
       if (!err) {
-        // console.log("Here is the credientials",result);
+        // process.exit();
         // res.send('OTP fetched');
-        if (UserOtp === result.otp) {
-          res.status(201).json("OTP matched");
+        if (UserOtp === result[0].otp) {
+          connection.query(
+            "DELETE FROM unregistered WHERE email = ?",
+            [userMail],
+            (err, res) => {
+              if (err) console.log(err);
+            }
+          );
+          connection.query(
+            "SELECT * FROM USERS WHERE email = ?",
+            [userMail],
+            (err, result) => {
+              if (!err) {
+                console.log(result[0]);
+                const userdata = result[0];
+                // generate JWT
+                const secretKey = crypto.randomBytes(32).toString("hex"); // secret key
+                const expiresInMinutes = 10;  
+                const payload = { userMail }; // payload
+                const options = { expiresIn: expiresInMinutes * 60 }; // JWT expiration time
+
+                const token = jwt.sign(payload, secretKey, options);
+
+                res.json({ token, userdata });
+              } else {
+                console.log(err);
+              }
+            }
+          );
         } else {
-          res.status(500).json("OTP mis matched");
+          res.status(500).json("OTP doesn't matched");
         }
       } else {
         console.log(err);
@@ -147,8 +175,6 @@ app.post("/verify-otp", (req, res) => {
     }
   );
 });
-
-
 
 // send sms
 // app.post("/send-otp", (req, res) => {
@@ -185,7 +211,7 @@ app.post("/create-account", (req, res) => {
   const number = req.body.number;
   const recipientEmail = req.body.mail;
   const date = new Date();
-  console.log(date);
+  // console.log(date);
   const time = date.getMinutes();
   const otp = Math.floor(100000 + Math.random() * 900000);
 
