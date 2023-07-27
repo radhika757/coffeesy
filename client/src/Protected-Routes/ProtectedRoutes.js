@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 const ProtectedRoutes = () => {
   const navigate = useNavigate();
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
-  console.log(isAuthenticated);
+  // console.log(isAuthenticated);
 
   useEffect(() => {
     if (isAuthenticated === true) {

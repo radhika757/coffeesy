@@ -3,7 +3,6 @@ import {
   BrowserRouter as Router,
   Route,
   Routes,
-  Switch,
 } from "react-router-dom";
 import Home from "./Home/Home";
 import Merch from "./Shop/Merch";
@@ -14,6 +13,7 @@ import ProtectedRoutes from "./Protected-Routes/ProtectedRoutes";
 import AppLayout from "./AppLayout";
 import AccountDetails from "./Account/AccountDetails";
 import Contact from "./Contact";
+import SubscriptionPlans from './Shop/SubscriptionPlans';
 
 function App() {
   return (
@@ -36,6 +36,7 @@ function App() {
             <Route index path="/" element={<Home />} />
             <Route path="/account" element={<Account />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/subscription-coffee-plans" element={<SubscriptionPlans />} />
           </Route>
 
           {/* <Route
