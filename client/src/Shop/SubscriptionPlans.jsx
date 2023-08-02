@@ -1,64 +1,74 @@
+import React, { useState } from "react";
 import styles from "./SubscriptionPlans.module.css";
-import { Swiper, SwiperSlide } from "swiper/react";
 
-// Swiper css
-import "swiper/css";
-// import 'swiper/css/bundle';
-import "swiper/css/grid";
-// import "swiper/css/pagination";
-import { Grid, Pagination,Navigation } from "swiper";
- 
-const SubscriptionPlans = () => {
+function SubscriptionPlans() {
+  const [currentSlide, setCurrentSlide] = useState(1);
+
+  const handleNextSlide = () => {
+    setCurrentSlide((prev) => prev + 1);
+  };
+  const handlePreviousSlide = () => {
+    setCurrentSlide((prev) => prev - 1);
+  };
+
+  const renderSlideContent = () => {
+    switch (currentSlide) {
+      case 1:
+        return (
+          <>
+            {/* // <div className={styles['slide-box']}> */}
+            <div className={styles["slide-box-headers"]}>
+              <span></span>
+              <h2>Choose a Coffee</h2>
+              <button onClick={handleNextSlide}>Pick a Flavour > </button>
+            </div>
+
+            <div className={styles.options}>
+              <span>Instant Coffee</span>
+              <span>Cold brew</span>
+              <span>Hot brew</span>
+              <span>Ground coffee</span>
+              <span>Cold coffee cans</span>
+              <span>Iced coffee bottles</span>
+            </div>
+
+            {/* // </div> */}
+          </>
+        );
+      case 2:
+        return (
+          <>
+            <div className={styles["slide-box-headers"]}>
+              <button onClick={handlePreviousSlide}>Choose a Coffee</button>
+              <h2>Pick a Flavour</h2>
+              <button onClick={handleNextSlide}>Subscription Options </button>
+            </div>
+            <p>Content for slide 2</p>
+          </>
+        );
+      case 3:
+        return (
+          <div>
+            <h2>Hot Brew . Original</h2>
+            <p>Content for slide 3</p>
+            <button onClick={handlePreviousSlide}>Previous</button>
+            {/* <button onClick={handleNextSlide}>Next</button> */}
+          </div>
+        );
+
+      default:
+        return null;
+    }
+  };
+
   return (
     <>
-      {/* <div className={styles.body}> */}
-        <Swiper
-          slidesPerView={2}
-          grid={{
-            rows: 3, 
-            fill: "row",
-          }}
-          navigation={true}
-          spaceBetween={10}
-          pagination={{
-            type: "fraction",
-          }}
-          modules={[Grid, Pagination,Navigation]}
-          className={`mySwiper ${styles.swiper}`}
-          // className={styles.swiper}
-        >
-          <SwiperSlide className={styles["swiper-slide"]}>
-            <h3> Coffee Dark</h3>
-          </SwiperSlide>
-          <SwiperSlide className={styles["swiper-slide"]}>
-            <h3>Coffee caramel</h3>
-          </SwiperSlide>
-          <SwiperSlide className={styles["swiper-slide"]}>
-            <h3>Coffee Oats</h3>
-          </SwiperSlide>
-          <SwiperSlide className={styles["swiper-slide"]}>
-            <h3>Coffee Hazelnut</h3>
-          </SwiperSlide>
-          <SwiperSlide className={styles["swiper-slide"]}>
-            <h3>Coffee Cinnamon</h3>
-          </SwiperSlide>
-          <SwiperSlide className={styles["swiper-slide"]}>
-            <h3>Coffee Pepper</h3>
-          </SwiperSlide>
-          <SwiperSlide className={styles["swiper-slide"]}>
-            <h3>Coffee powder</h3>
-          </SwiperSlide>
-          <SwiperSlide className={styles["swiper-slide"]}>
-            <h3>Coffee beans</h3>
-          </SwiperSlide>
-          <SwiperSlide className={styles["swiper-slide"]}>
-            <h3>Coffee select</h3>
-          </SwiperSlide>
-        </Swiper>
-      
-      {/* </div> */}
+      {/* <div className={styles.header}>
+      <h2>Subscribe to your kind of coffee</h2>
+     </div> */}
+      {renderSlideContent()}
     </>
   );
-};
+}
 
 export default SubscriptionPlans;
