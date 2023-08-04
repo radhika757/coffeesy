@@ -153,7 +153,7 @@ app.post("/verify-otp", (req, res) => {
                 const userdata = result[0];
                 // generate JWT
                 const secretKey = crypto.randomBytes(32).toString("hex"); // secret key
-                const expiresInMinutes = 10;  
+                const expiresInMinutes = 10;
                 const payload = { userMail }; // payload
                 const options = { expiresIn: expiresInMinutes * 60 }; // JWT expiration time
 
@@ -353,4 +353,21 @@ app.post("/getUserEnteredOTP", (req, res) => {
       }
     }
   );
+});
+
+// subscriptions
+app.get("/get-subscritpion-packages", (req, res) => {
+  connection.query("SELECT * FROM subscription_packages", (err, result) => {
+    if (err) {
+      res.send("Error:", err);
+    } else {
+      console.log(result);
+      res.send(result);
+    }
+  });
+});
+
+// subscription details
+app.get("/get-subscription-flavor", (req, res) => {
+  let id = req.body.id;
 });

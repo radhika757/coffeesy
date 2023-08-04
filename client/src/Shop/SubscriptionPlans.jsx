@@ -1,11 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./SubscriptionPlans.module.css";
 import left from "../assets/subscribe/left.png";
 import right from "../assets/subscribe/right.png";
+import axios from "axios";
+import coffeeb from "../assets/subscribe/cbrew.jpg";
+import coffeecans from "../assets/subscribe/coffeecans.jpg";
+import instant from "../assets/subscribe/instant.jpg";
 
 function SubscriptionPlans() {
   const [currentSlide, setCurrentSlide] = useState(1);
   const [selectedState, setSelectedSate] = useState(false);
+  const [getSubscriptionDetails, setSubscriptionDetails] = useState([]);
 
   const handleNextSlide = () => {
     setCurrentSlide((prev) => prev + 1);
@@ -13,6 +18,22 @@ function SubscriptionPlans() {
   const handlePreviousSlide = () => {
     setCurrentSlide((prev) => prev - 1);
   };
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:3001/get-subscritpion-packages")
+      .then((response) => {
+        // console.log(response.data);
+        setSubscriptionDetails(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+
+  function sendSelectedCoffee() {
+    // console.log(id);
+  }
 
   const renderSlideContent = () => {
     switch (currentSlide) {
@@ -23,8 +44,8 @@ function SubscriptionPlans() {
               <div className={styles["slide-box"]}>
                 <div className={styles["slide-box-headers"]}>
                   <button onClick={handlePreviousSlide} disabled>
-                    <span> Choose a Coffee</span>
                     <img src={left} style={{ margin: "5px" }} />
+                    <span> Choose a Coffee</span>
                   </button>
                 </div>
                 <div className={styles.title}>
@@ -32,19 +53,33 @@ function SubscriptionPlans() {
                 </div>
                 <div className={styles.right}>
                   <button onClick={handleNextSlide}>
-                  <img src={right} style={{ margin: "5px" }} />
                     <span>Pick a Flavour</span>
-                
+                    <img src={right} style={{ margin: "5px" }} />
                   </button>
                 </div>
               </div>
               <div className={styles["options-grid"]}>
-                <div className={styles["grid-item"]}>Instant Coffee</div>
-                <div className={styles["grid-item"]}>Cold brew</div>
-                <div className={styles["grid-item"]}>Hot brew</div>
-                <div className={styles["grid-item"]}>Ground coffee</div>
-                <div className={styles["grid-item"]}>Cold coffee cans</div>
-                <div className={styles["grid-item"]}>Iced coffee bottles</div>
+                {getSubscriptionDetails.map((data) => (
+                  <div
+                    key={data.id}
+                    className={styles["grid-item-box"]}
+                   
+                  >
+                    {/* <button  onClick={sendSelectedCoffee()}> */}
+                      <div className={styles["grid-image"]}>
+                        <img
+                          src={require(`../assets/subscribe/${data.image}`)}
+                          alt="imgs"
+                        />
+                      </div>
+                      <div className={styles.content}>
+                        <h4>{data.name}</h4>
+                        <h4>Starting from &#8377;250</h4>
+                      </div>
+                      <div className={styles.descrip}>{data.description}</div>
+                    {/* </button> */}
+                  </div>
+                ))}
               </div>
             </div>
           </>
