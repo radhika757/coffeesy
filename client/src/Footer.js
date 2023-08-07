@@ -1,32 +1,29 @@
 import { React, useEffect, useState } from "react";
 import mystyles from "./Footer.module.css";
-import logo from "./assets/logo-white.png";
+import logo from "./assets/coffe.png";
+import square from "./assets/square.png";
+import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 
 const Footer = () => {
   return (
     <>
-      <div className={mystyles["footer-box"]}>
-        <div className={mystyles["footer-box-one"]}>
-          {/* <img src={logo} alt="logo" />
-          <div className={mystyles["footer-content"]}>
-            <div>
-              <h3>Home</h3>
-              <h3>Flavors</h3>
-              <h3>Merch</h3>
-              <h3>Cans</h3>
-            </div>
-            <div>
-              <h3>Shop</h3>
-              <h3>Green Tea</h3>
-              <h3>Bulk orders</h3>
-              <h3>Gift someone</h3>
-            </div>
-          </div> */}
+      <div className={mystyles["footer-main-box"]}>
+        <div className={mystyles["footer-container"]}>
+          <div className={mystyles.logo}>
+            <span>
+              <img src={logo} />
+            </span>
+            <span>
+              <h2>Coffeesy</h2>
+            </span>
+          </div>
+         <div className={mystyles.newsletter}>
+          <input type='text' placeholder="Subscribe to our Newsletter"/>
+          <button type="submit" disabled>Submit</button>
+         </div>
         </div>
-        <div className={mystyles["footer-box-two"]}>
-          <small>Terms</small>
-          <small>Privacy</small>
-        </div>
+        <span className={mystyles.border}></span>
       </div>
     </>
   );

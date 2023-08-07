@@ -43,6 +43,8 @@
   padding: 10px;
   margin: 20px 10px;
 }
+
+
 .grid-image {
   width: 26em;
   /* height: 25em; */
@@ -53,9 +55,16 @@
 }
 
 .grid-item-box {
-  /* border: 1px solid black; */
   background-color: #ffffff;
   text-align: center;
+  cursor: pointer;
+}
+
+.clicked-item{
+  opacity: 0.5;
+  background-color: #ffffff;
+  text-align: center;
+  cursor: pointer;
 }
 
 .content {
