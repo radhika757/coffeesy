@@ -3,11 +3,13 @@ import styles from "./SubscriptionPlans.module.css";
 import left from "../assets/subscribe/left.png";
 import right from "../assets/subscribe/right.png";
 import axios from "axios";
+import { Rings } from "react-loader-spinner";
 
 function SubscriptionPlans() {
   const [currentSlide, setCurrentSlide] = useState(1);
   const [getSubscriptionDetails, setSubscriptionDetails] = useState([]);
   const [clickedBoxes, setClickedBoxes] = useState([]);
+  const [getSubscriptionFlavours, setSubscriptionFlavours] = useState([]);
 
   const handleNextSlide = () => {
     if (clickedBoxes.length !== 0) {
@@ -32,14 +34,28 @@ function SubscriptionPlans() {
       });
   }, []);
 
-  function sendSelectedCoffee(id) {
-    console.log(id);
+  function sendSelectedCoffee(id, name) {
+    console.log(id, name);
     setClickedBoxes((prevClickedBoxes) => {
       // const updatedClickedBoxes = [...prevClickedBoxes];
       const updatedClickedBoxes = [];
       updatedClickedBoxes[id] = !updatedClickedBoxes[id];
       return updatedClickedBoxes;
     });
+    getDetails();
+
+    // send selected coffee's id
+    async function getDetails() {
+      try {
+        const response = await axios.get(
+          `http://localhost:3001/get-coffee-flavor/${id}`
+        );
+        setSubscriptionFlavours(response);
+        console.log(response);
+      } catch (error) {
+        console.log("Error fetching data", error);
+      }
+    }
   }
 
   function boxClass(id) {
@@ -70,27 +86,35 @@ function SubscriptionPlans() {
                 </div>
               </div>
               <div className={styles["options-grid"]}>
-                {getSubscriptionDetails.map((data) => (
-                  <div
-                    key={data.id}
-                    className={boxClass(data.id)}
-                    // className={isClicked ? styles["clicked-item"] : styles["grid-item-box"]}
-                    onClick={() => sendSelectedCoffee(data.id)}
-                  >
-                    <div className={styles["grid-image"]}>
-                      <img
-                        src={require(`../assets/subscribe/${data.image}`)}
-                        alt="imgs"
-                      />
-                    </div>
-                    {/* Product Description */}
-                    <div className={styles.content}>
-                      <h4>{data.name}</h4>
-                      <h4>Starting from &#8377;250</h4>
-                    </div>
-                    <div className={styles.descrip}>{data.description}</div>
+                {getSubscriptionDetails === [] ? (
+                  <div className={styles.content}>
+                    <h1>loading...</h1>
                   </div>
-                ))}
+                ) : (
+                  <>
+                    {getSubscriptionDetails.map((data) => (
+                      <div
+                        key={data.id}
+                        className={boxClass(data.id)}
+                        // className={isClicked ? styles["clicked-item"] : styles["grid-item-box"]}
+                        onClick={() => sendSelectedCoffee(data.id, data.name)}
+                      >
+                        <div className={styles["grid-image"]}>
+                          <img
+                            src={require(`../assets/subscribe/${data.image}`)}
+                            alt="imgs"
+                          />
+                        </div>
+                        {/* Product Description */}
+                        <div className={styles.content}>
+                          <h4>{data.name}</h4>
+                          <h4>Starting from &#8377;250</h4>
+                        </div>
+                        <div className={styles.descrip}>{data.description}</div>
+                      </div>
+                    ))}
+                  </>
+                )}
               </div>
             </div>
           </>
@@ -98,8 +122,8 @@ function SubscriptionPlans() {
       case 2:
         return (
           <>
-          <div className={styles["main-container-box"]}>
-          <div className={styles["slide-box"]}>
+            <div className={styles["main-container-box"]}>
+              <div className={styles["slide-box"]}>
                 <div className={styles["slide-box-headers"]}>
                   <button onClick={handlePreviousSlide}>
                     <img src={left} style={{ margin: "5px" }} />
@@ -111,14 +135,13 @@ function SubscriptionPlans() {
                 </div>
                 <div className={styles.right}>
                   <button onClick={handleNextSlide}>
-                    <span>Select Frequency</span> 
+                    <span>Select Frequency</span>
                     <img src={right} style={{ margin: "5px" }} />
                   </button>
                 </div>
               </div>
-            <p>Content for slide 2</p>
-          </div>
-          
+              <p>Content for slide 2</p>
+            </div>
           </>
         );
       case 3:

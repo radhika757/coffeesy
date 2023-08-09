@@ -361,13 +361,43 @@ app.get("/get-subscritpion-packages", (req, res) => {
     if (err) {
       res.send("Error:", err);
     } else {
-      console.log(result);
+      // console.log(result);
       res.send(result);
     }
   });
 });
 
 // subscription details
-app.get("/get-subscription-flavor", (req, res) => {
-  let id = req.body.id;
+app.get("/get-coffee-flavor/:id", (req, res) => {
+  let id = req.params.id;
+  // console.log(id);
+  connection.query(
+    "SELECT * FROM subscription_prices WHERE subscription_id = ?",
+    [id],
+    (err, flavorsResult) => {
+      if (!err) {
+        connection.query(
+          "SELECT * FROM coffee_grind WHERE subscription_id = ?",
+          [id],
+          (error, result) => {
+            if (!error) {
+              if (!result) {
+                // console.log(flavorsResult);
+                res.status(201).json({ flavors: flavorsResult });
+              } else {
+                // console.log(flavorsResult, result);
+                res.status(201).json({ flavors: flavorsResult, grind: result });
+              }
+            } else {
+              console.log(error);
+            }
+          }
+        );
+        // res.status(201).json(result);
+      } else {
+        console.log("Error in fetching subscription flavour data", err);
+        res.status(500).json({ message: "Internal server error" });
+      }
+    }
+  );
 });
