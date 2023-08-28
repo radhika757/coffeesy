@@ -9,7 +9,7 @@ const Ingredients = () => {
     Axios.get("http://localhost:3001/get_ingredients")
       .then((response) => {
         // console.log(response.data);
-        setIng(response.data);
+        setIng(response.data); 
       })
       .catch((error) => {
         console.log(error);

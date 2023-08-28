@@ -28,7 +28,7 @@ function App() {
             }
           >
             <Route path="/merch" element={<Merch />} />
-            <Route path="/cart" element={<Cart />} />
+           
             <Route path="/account/:name" element={<AccountDetails />} />
             {/* More protected routes */}
           </Route>
@@ -36,7 +36,9 @@ function App() {
             <Route index path="/" element={<Home />} />
             <Route path="/account" element={<Account />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/cart" element={<Cart />} />
             <Route path="/subscription-coffee-plans" element={<SubscriptionPlans />} />
+            
           </Route>
 
           {/* <Route

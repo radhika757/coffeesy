@@ -3,13 +3,16 @@ import Landing from "./Landing";
 import Ingredients from "./Ingredients";
 import Flavours from "./Flavours";
 import Subscribe from "./Subscribe";
+import { Welcome } from "./Welcome";
+
 const Home = () => {
   return (
     <React.Fragment>
-      <Landing/>
-      <Ingredients/>
-      <Flavours/>
-      <Subscribe/>
+      <Landing />
+      <Welcome />
+      <Ingredients />
+      <Flavours />
+      <Subscribe />
     </React.Fragment>
   );
 };

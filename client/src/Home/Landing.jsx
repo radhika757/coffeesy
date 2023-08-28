@@ -5,7 +5,7 @@ import fastforward from '../assets/fast-forward.png';
 
 const Landing = () => {
   return (
-    <>
+    <> 
       <div className="landing">
         <div className="background-image"></div>
         <div className="left-container">

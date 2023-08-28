@@ -9,11 +9,13 @@ const ProtectedRoutes = () => {
   // console.log(isAuthenticated);
 
   useEffect(() => {
-    if (isAuthenticated === true) {
-      navigate("/cart");
-    } else {
-      navigate("/account");
-    }
+    let url = isAuthenticated ? "/cart" : "/account";
+    navigate(url);
+    // if (isAuthenticated === true) {
+    //   navigate("/cart");
+    // } else {
+    //   navigate("/account");
+    // }
   }, []);
 };
 

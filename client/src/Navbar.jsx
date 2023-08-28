@@ -72,6 +72,11 @@ const Navbar = () => {
                 <img src={user} alt="user" />{" "}
               </Link>
             </li>
+            <li>
+              <Link to="/cart">
+                <img src={cart} alt="cart" />
+              </Link>
+            </li>
           </ul>
         </nav>
       )}
