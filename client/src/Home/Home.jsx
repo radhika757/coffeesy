@@ -4,6 +4,7 @@ import Ingredients from "./Ingredients";
 import Flavours from "./Flavours";
 import Subscribe from "./Subscribe";
 import { Welcome } from "./Welcome";
+import { ProductSlider } from "./ProductSlider";
 
 const Home = () => {
   return (
@@ -13,6 +14,7 @@ const Home = () => {
       <Ingredients />
       <Flavours />
       <Subscribe />
+      <ProductSlider/>
     </React.Fragment>
   );
 };

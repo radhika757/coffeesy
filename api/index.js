@@ -19,11 +19,11 @@ const crypto = require("crypto");
 app.use(express.json());
 app.use(cors("http://localhost:3000/"));
 
-const connection = mysql.createConnection({
-  user: "root",
+const connection = mysql.createConnection({ 
+  user: "root", 
   host: "localhost",
   port: "3306",
-  password: "password",
+  password: "", 
   database: "coffeesy",
 });
 
